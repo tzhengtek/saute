@@ -1,4 +1,4 @@
-# SAUTE: Speaker-Aware Utterance Embedding Unit
+# 👨‍🍳 SAUTE: Speaker-Aware Utterance Embedding Unit 👨‍🍳
 
 **Authors**: Justin Duc, Timothé Zheng, Paul Laban  
 **Affiliation**: Dept. of Computer Science & Technology, Tsinghua University  
