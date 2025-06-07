@@ -53,3 +53,18 @@ SAUTE is especially useful for:
 - **Contextualization**: Injected into token representations via speaker-specific memory.
 
 ---
+
+## 📚 Research Paper
+
+The full methodology, experiments, and technical deep dive are available in our paper:
+📄 **[SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf](https://github.com/user-attachments/files/20640425/SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf)**
+
+---
+
+## Authors
+
+- [Justin Duc](https://github.com/just1truc)
+- [Timothé Zheng](https://github.com/tzhengtek)
+- [Paul Laban]
+
+---
