@@ -15,8 +15,6 @@ class EDUSpeakerAwareMLM(nn.Module):
             param.requires_grad = False  # frozen encoder
 
         self.d_model = config.hidden_size
-        # self.key_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
-        # self.val_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
         self.query_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
 
         encoder_layer = nn.TransformerEncoderLayer(d_model=config.hidden_size, nhead=config.num_attention_heads, batch_first=True)
@@ -56,22 +54,13 @@ class EDUSpeakerAwareMLM(nn.Module):
 
 class SAUTE(nn.Module):
     def __init__(self,
-            config      : SAUTEConfig,
-            activation  : str = "relu"
+            config      : SAUTEConfig
         ):
         super().__init__()
 
         self.d_model = config.hidden_size
         self.key_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
         self.val_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
-
-        self.activation = nn.ReLU() if activation == "relu" else nn.GELU()
-
-        self.mlp = nn.Sequential(
-            nn.Linear(config.hidden_size, config.intermediate_size),
-            self.activation,
-            nn.Linear(config.intermediate_size, config.hidden_size),
-        )
 
     def forward(self,
             input_ids           : torch.Tensor,
@@ -116,7 +105,6 @@ class SAUTE(nn.Module):
         speaker_matrices_exp = speaker_matrices.unsqueeze(2)  # (B, T, 1, D, D)
         token_embeddings_exp = token_embeddings.unsqueeze(-1)  # (B, T, L, D, 1)
         contextual_tokens = token_embeddings + torch.matmul(speaker_matrices_exp, token_embeddings_exp).squeeze(-1)  # (B, T, L, D)
-        contextual_tokens = self.mlp(contextual_tokens)
 
         return contextual_tokens
 
