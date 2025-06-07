@@ -7,13 +7,6 @@ from model  import UtteranceEmbedings
 from saute_config import SAUTEConfig
 from saute_datasets     import SAUTEDataset
 
-def train(args):
-    print(f"Training {args.model} for {args.epochs} epochs with {args.layers} layers")
-
-def test(args):
-    print(f"Testing model from {args.checkpoint}")
-    print(f"Predicting using model at {args.checkpoint} on data: {args.input}")
-
 def get_args():
     parser = argparse.ArgumentParser(description="SAUTE.")
     subparsers = parser.add_subparsers()
@@ -26,12 +19,9 @@ def get_args():
                               help='Activation function')
     train_parser.add_argument('--layers', type=int, default=1,
                               help='Number of layers')
-    train_parser.set_defaults(func=train)
 
-
-    test_parser = subparsers.add_parser('inference', help="Inference the model")
-    # test_parser.add_argument('--checkpoint', type=str, required=True, help='Path to saved model')
-    test_parser.set_defaults(func=test)
+    # Inference
+    inference_parser = subparsers.add_parser('inference', help="Inference the model")
 
     parser.add_argument('--datasets', type=str, default="allenai/soda",
                         help='Dataset Reposity HugginFace')
@@ -134,14 +124,18 @@ def main():
 
     print("Start Training...")
     training_args = TrainingArguments(
-        output_dir="h-saute-mlm-76m-0.0.2",
-        eval_strategy="steps",
+        output_dir="./checkpoints",
+        push_to_hub=True,
+        hub_strategy="end",
+        hub_model_id="username/model-name",
+        save_steps=5000,
+        save_strategy="steps",
         eval_steps=150,
+        eval_strategy="steps",
         per_device_train_batch_size=5,
         per_device_eval_batch_size=5,
         num_train_epochs=1,
         weight_decay=0.01,
-        save_strategy="epoch",
         logging_dir="./logs",
         logging_steps=150,
         fp16=True
