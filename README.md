@@ -1,8 +1,4 @@
-# 👨‍🍳 SAUTE: Speaker-Aware Utterance Embedding Unit 👨‍🍳
-
-**Authors**: Justin Duc, Timothé Zheng, Paul Laban  
-**Affiliation**: Dept. of Computer Science & Technology, Tsinghua University  
-**Contact**: hyppoduc@gmail.com, enxuan.zhg@gmail.com, plaban.pro@gmail.com
+# 👨‍🍳 SAUTE: Speaker-Aware Utterance Embedding Unit
 
 ---
 
