@@ -1,4 +1,4 @@
-# 👨‍🍳 SAUTE: Speaker-Aware Utterance Embedding Unit
+# 👨‍🍳 SAUTE: **S**peaker-**A**ware **UT**terance **E**mbedding unit
 
 ---
 
