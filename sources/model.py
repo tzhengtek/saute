@@ -20,8 +20,6 @@ class EDUSpeakerAwareMLM(nn.Module):
         encoder_layer = nn.TransformerEncoderLayer(d_model=config.hidden_size, nhead=config.num_attention_heads, batch_first=True)
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=config.num_hidden_layers)
 
-        self.speaker_memory = {}  # Will be filled per batch
-        self.lm_head = nn.Linear(config.hidden_size, self.edu_encoder.config.vocab_size)
         self.saute = SAUTE(config)
 
     def forward(self, input_ids, attention_mask, speaker_names):
@@ -41,7 +39,6 @@ class EDUSpeakerAwareMLM(nn.Module):
 
         token_embeddings = token_embeddings.view(B, T, L, self.d_model)
         edu_embeddings = token_embeddings.mean(dim=2)  # (B, T, D)
-        token_embeddings = self.query_proj(token_embeddings)
 
         contextual_tokens = self.saute(input_ids, speaker_names, token_embeddings, edu_embeddings)
 
@@ -59,6 +56,8 @@ class SAUTE(nn.Module):
         super().__init__()
 
         self.d_model = config.hidden_size
+        
+        self.query_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
         self.key_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
         self.val_proj = nn.Linear(config.hidden_size, config.hidden_size, bias = False)
 
@@ -74,6 +73,7 @@ class SAUTE(nn.Module):
 
         speaker_memories = [{} for _ in range(B)]
         speaker_matrices = torch.zeros(B, T, self.d_model, self.d_model, device=edu_embeddings.device)
+        query_embeddings = self.query_proj(token_embeddings)
 
         for b in range(B):
             for t in range(T):
@@ -103,7 +103,7 @@ class SAUTE(nn.Module):
 
         # Apply speaker matrix to each token
         speaker_matrices_exp = speaker_matrices.unsqueeze(2)  # (B, T, 1, D, D)
-        token_embeddings_exp = token_embeddings.unsqueeze(-1)  # (B, T, L, D, 1)
+        token_embeddings_exp = query_embeddings.unsqueeze(-1)  # (B, T, L, D, 1)
         contextual_tokens = token_embeddings + torch.matmul(speaker_matrices_exp, token_embeddings_exp).squeeze(-1)  # (B, T, L, D)
 
         return contextual_tokens

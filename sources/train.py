@@ -85,7 +85,8 @@ def train(args):
     model_config = SAUTEConfig(
         num_attention_heads = 1,
         num_hidden_layers   = 1,
-        num_token_layers    = 1,
+        # num_token_layers    = 1,
+        hidden_size = 768
     )
     model = UtteranceEmbedings(model_config).to(args.device)
     print(f"Model is loaded on {args.device} device")
@@ -105,14 +106,14 @@ def train(args):
         hub_model_id="JustinDuc/saute",
         save_steps=5000,
         save_strategy="steps",
-        eval_steps=150,
+        eval_steps=50,
         eval_strategy="steps",
-        per_device_train_batch_size=1,
-        per_device_eval_batch_size=1,
+        per_device_train_batch_size=2,
+        per_device_eval_batch_size=3,
         num_train_epochs=1,
         weight_decay=0.01,
         logging_dir="./logs",
-        logging_steps=150,
+        logging_steps=50,
         fp16=True
     )
 
