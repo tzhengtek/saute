@@ -1,39 +1,15 @@
-import argparse
-import random
-from torch.utils.data import Subset
 import torch
-from transformers         import Trainer, TrainingArguments, BertTokenizerFast
-from model  import UtteranceEmbedings
-from saute_config import SAUTEConfig
-from saute_datasets     import SAUTEDataset
+import random
 
-def get_args():
-    parser = argparse.ArgumentParser(description="SAUTE.")
-    subparsers = parser.add_subparsers()
+from transformers   import BertTokenizerFast
+from transformers   import Trainer, TrainingArguments, BertTokenizerFast
+from sources.model  import UtteranceEmbedings
 
-    # Training parameters
-    train_parser = subparsers.add_parser('train', help="Train the model")
-    train_parser.add_argument("--epochs", type=int, default=1,
-                              help="Number of epochs")
-    train_parser.add_argument('--activation', type=str, default='relu', choices=['relu', 'gelu'],
-                              help='Activation function')
-    train_parser.add_argument('--layers', type=int, default=1,
-                              help='Number of layers')
-
-    # Inference
-    inference_parser = subparsers.add_parser('inference', help="Inference the model")
-
-    parser.add_argument('--datasets', type=str, default="allenai/soda",
-                        help='Dataset Reposity HugginFace')
-    
-    parser.add_argument('--device', type=str, default='cuda', choices=['cpu', 'cuda'],
-                        help='Device to train on')
-
-    return parser.parse_args()
+from torch.utils.data       import Subset
+from sources.saute_config   import SAUTEConfig
+from sources.saute_datasets import SAUTEDataset
 
 def compute_masked_accuracy(logits, labels):
-    # logits: [batch_size, seq_len, vocab_size]
-    # labels: [batch_size, seq_len]
 
     preds = torch.argmax(logits, dim=-1)  # [batch_size, seq_len]
 
@@ -93,9 +69,8 @@ def batched_saute_collator(batch):
         "labels": labels                      # (B, T, L)
     }
 
-def main():
-    args = get_args()
-
+def train(args):
+    
     # Load Dataset
     train_dataset = SAUTEDataset(split="train", dialog_format="edu", dataset=args.datasets)
     eval_dataset = SAUTEDataset(split="test", dialog_format="edu", dataset=args.datasets)
@@ -108,9 +83,9 @@ def main():
 
     # Load Model
     model_config = SAUTEConfig(
-        num_attention_heads = 12,
-        num_hidden_layers   = 6,
-        num_token_layers=3,
+        num_attention_heads = 1,
+        num_hidden_layers   = 1,
+        num_token_layers    = 1,
     )
     model = UtteranceEmbedings(model_config).to(args.device)
     print(f"Model is loaded on {args.device} device")
@@ -127,13 +102,13 @@ def main():
         output_dir="./checkpoints",
         push_to_hub=True,
         hub_strategy="end",
-        hub_model_id="username/model-name",
+        hub_model_id="JustinDuc/saute",
         save_steps=5000,
         save_strategy="steps",
         eval_steps=150,
         eval_strategy="steps",
-        per_device_train_batch_size=5,
-        per_device_eval_batch_size=5,
+        per_device_train_batch_size=1,
+        per_device_eval_batch_size=1,
         num_train_epochs=1,
         weight_decay=0.01,
         logging_dir="./logs",
@@ -153,6 +128,3 @@ def main():
 
     trainer.train()
     return
-
-if __name__ == "__main__":
-    main()

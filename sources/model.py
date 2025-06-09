@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from transformers import PreTrainedModel, AutoModel
 from transformers.modeling_outputs import MaskedLMOutput
-from saute_config import SAUTEConfig
+from sources.saute_config import SAUTEConfig
 
 class EDUSpeakerAwareMLM(nn.Module):
     def __init__(self, config):
