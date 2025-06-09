@@ -61,6 +61,5 @@ The full methodology, experiments, and technical deep dive are available in our 
 
 - [Justin Duc](https://github.com/just1truc) — Tsinghua University
 - [Timothé Zheng](https://github.com/tzhengtek) — Tsinghua University
-- [Paul Laban] — Tsinghua University
 
 ---
