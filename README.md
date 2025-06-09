@@ -57,6 +57,11 @@ The full methodology, experiments, and technical deep dive are available in our 
 
 ---
 
+## Hugging-face Accessibility
+
+The model is easily usage using the hugginface transformer package
+🤗 **[JustinDuc/saute](https://huggingface.co/JustinDuc/saute)**
+
 ## Authors
 
 - [Justin Duc](https://github.com/just1truc) — Tsinghua University
