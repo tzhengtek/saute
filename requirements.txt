@@ -3,4 +3,4 @@ diffusers
 accelerate
 ipywidgets
 transformers
-datasets=2.16.1
+datasets==2.16.1

@@ -4,11 +4,11 @@ args = get_args()
 
 """ Main file """
 from sources.train  import *
-from sources.test   import *
+from sources.inference   import *
 
 args_to_function = {
     "train": train,
-    "test": test
+    "inference": inference
 }
 
 if __name__ == "__main__":
