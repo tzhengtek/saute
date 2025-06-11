@@ -25,8 +25,6 @@ SAUTE is especially useful for:
 - **Speaker Memory Construction**: Builds structured memory matrices per speaker from EDU embeddings.
 - **Efficient Linear Attention**: Contextualizes each token using memory summaries without quadratic complexity.
 - **Pretrained Transformer Integration**: Can be plugged on top of BERT (frozen or fine-tuned).
-- **Minimal Overhead**: Adds only ~2M parameters for substantial MLM performance improvements.
-
 ---
 
 ## 📈 Performance
@@ -36,7 +34,9 @@ SAUTE is especially useful for:
 | BERT-base (frozen)        | 33.45       | 45.89        |
 | + 1-layer Transformer     | 68.20       | 76.69        |
 | + 2-layer Transformer     | 71.81       | 79.54        |
-| **+ SAUTE (Ours)**        | **72.05**   | **80.40%**   |
+| **+ 1-layer SAUTE (Ours)**        | **72.05**   | **80.40%**   |
+| + 3-layer Transformer| 73.5 | 80.84 |
+| **+ 3-layer SAUTE (Ours)**| **75.65** | **85.55%**|
 
 > Evaluated on the **SODA** validation set using masked language modeling (MLM).
 
@@ -57,10 +57,35 @@ The full methodology, experiments, and technical deep dive are available in our 
 
 ---
 
+## 📙 Usage 
+---
+
+The model can easily be trained using the CLI
+```bash
+>> python3 main.py train --help                    
+usage: main.py train [-h] [--epochs EPOCHS] [--activation {relu,gelu}] [--layers LAYERS]
+
+options:
+  -h, --help            show this help message and exit
+  --epochs EPOCHS       Number of epochs
+  --activation {relu,gelu}
+                        Activation function
+  --layers LAYERS       Number of layers
+```
+
+To use the trained model, the format of the input must follow the ``dialog.json`` file format.
+```bash
+>> python3 main.py inference --filepath dialog.json
+```
+
+---
+
 ## Hugging-face Accessibility
 
 The model is easily usage using the hugginface transformer package
 🤗 **[JustinDuc/saute](https://huggingface.co/JustinDuc/saute)**
+
+---
 
 ## Authors
 
