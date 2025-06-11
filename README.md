@@ -53,7 +53,8 @@ SAUTE is especially useful for:
 ## 📚 Research Paper
 
 The full methodology, experiments, and technical deep dive are available in our paper:
-📄 **[SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf](https://github.com/user-attachments/files/20640425/SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf)**
+📄 **[SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf](https://github.com/user-attachments/files/20689695/SAUTE_Speaker_Aware_Utterance_Embedding_Unit.pdf)
+**
 
 ---
 
