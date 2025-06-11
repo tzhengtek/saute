@@ -18,6 +18,7 @@ def get_args():
     inference_parser = subparsers.add_parser('inference', help="Inference the model")
     inference_parser.add_argument("--filepath", type=str, help="Input Filepath dialog", required=True)
     inference_parser.add_argument("--temperature", type=float, default=1.0, help="Temperature for random sampling")
+    inference_parser.add_argument("--random-sampling", required=False, default=False, action="store_true")
 
     parser.add_argument('--datasets', type=str, default="allenai/soda",
                         help='Dataset Reposity HugginFace')

@@ -3,18 +3,21 @@ import json
 import torch
 from torch.nn.utils.rnn import pad_sequence
 import torch.nn.functional as F
-
+from time import time
 
 from transformers import AutoModel
 
 class SAUTEPipeline:
     def __init__(self):
+        print(" === Loading model === ")
         model_name = "bert-base-uncased"
         self.tokenizer = BertTokenizerFast.from_pretrained(model_name)
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
         self.saute_model = AutoModel.from_pretrained("JustinDuc/saute", trust_remote_code=True).to(self.device)
 
-    def inference(self, filepath):
+    def inference(self, filepath, random_sampling):
+        
+        print(" === Inference === ")
         with open(filepath, "r") as f:
             dialogs = json.load(f)
         mask_token = self.tokenizer.mask_token
@@ -24,12 +27,10 @@ class SAUTEPipeline:
         edu_embeddings = []
         attention_mask = []
 
-
         for dialog in dialogs:
             edu = dialog["edu"]
             split_edu = edu.split(mask_token)
             names.append(dialog["speaker"])
-
 
             sentence_emb = []
             attention_emb = []
@@ -53,16 +54,19 @@ class SAUTEPipeline:
         temperature = 1.0
         probs = F.softmax(logits / temperature, dim=-1)
 
-        mask_positions = (padded_edu_embeddings == mask_token_id).squeeze(0)
+        if random_sampling:
+            mask_positions = (padded_edu_embeddings == mask_token_id).squeeze(0)
 
-        output_ids = padded_edu_embeddings.clone().squeeze(0)
+            output_ids = padded_edu_embeddings.clone().squeeze(0)
 
-        for b in range(probs.shape[0]):  # batch size
-            for i in range(probs.shape[1]):  # sequence length
-                if mask_positions[b, i]:
-                    sampled_token = torch.multinomial(probs[b, i], num_samples=1)
-                    output_ids[b, i] = sampled_token
-                
+            for b in range(probs.shape[0]):  # batch size
+                for i in range(probs.shape[1]):  # sequence length
+                    if mask_positions[b, i]:
+                        sampled_token = torch.multinomial(probs[b, i], num_samples=1)
+                        output_ids[b, i] = sampled_token
+        else:
+            output_ids = torch.where(padded_edu_embeddings == mask_token_id, probs.argmax(-1), padded_edu_embeddings).squeeze(0)
+            # print(output_ids.shape)
 
         dialog_output = self.tokenizer.batch_decode(output_ids, skip_special_tokens=True)
 
@@ -70,7 +74,9 @@ class SAUTEPipeline:
 
 def inference(args):
     pipeline = SAUTEPipeline()
-    print(pipeline.inference(args.filepath))
+    start = time()
+    print(pipeline.inference(args.filepath, args.random_sampling))
+    print(f"Results obtained in {time() - start:.2f}s")
 
 
 
