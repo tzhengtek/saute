@@ -11,8 +11,8 @@ class SAUTEPipeline:
     def __init__(self):
         model_name = "bert-base-uncased"
         self.tokenizer = BertTokenizerFast.from_pretrained(model_name)
-        self.saute_model = AutoModel.from_pretrained("JustinDuc/saute", trust_remote_code=True)
         self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        self.saute_model = AutoModel.from_pretrained("JustinDuc/saute", trust_remote_code=True).to(self.device)
 
     def inference(self, filepath):
         with open(filepath, "r") as f:

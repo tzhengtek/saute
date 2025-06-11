@@ -1,0 +1,42 @@
+[
+  {
+    "speaker": "Joey Tribbiani",
+    "edu": "Come [MASK] !"
+  },
+  {
+    "speaker": "Chandler Bing",
+    "edu": "Yes, Gunther, can I [MASK] two cups of chino , please ?"
+  },
+  {
+    "speaker": "Gunther",
+    "edu": "Good [MASK] ."
+  },
+  {
+    "speaker": "Joey Tribbiani",
+    "edu": "Come on , season tickets ! Season tickets , do you know what that means ?"
+  },
+  {
+    "speaker": "Chandler Bing",
+    "edu": "[MASK] it ! Okay , I 'm not giving up the apartment ."
+  },
+  {
+    "speaker": "Joey Tribbiani",
+    "edu": "Oh come - look , when I was a kid my dad 's [MASK] gave season tickets to the number one salesman every year , all right ? My dad never won ! Of course , he was n't in the sales division , but still , I never ever , ever forgot that !"
+  },
+  {
+    "speaker": "Ross Geller",
+    "edu": "Hey , [MASK] !"
+  },
+  {
+    "speaker": "Joey Tribbiani",
+    "edu": "Hey !"
+  },
+  {
+    "speaker": "Chandler Bing",
+    "edu": "Oh my God !"
+  },
+  {
+    "speaker": "Joey Tribbiani",
+    "edu": "We don't make enough [MASK] of you already ?"
+  }
+]
