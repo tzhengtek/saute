@@ -82,7 +82,7 @@ To use the trained model, the format of the input must follow the ``dialog.json`
 
 ## Hugging-face Accessibility
 
-The model is easily usage using the hugginface transformer package
+The model is easily accessible using the hugginface transformer package
 🤗 **[JustinDuc/saute](https://huggingface.co/JustinDuc/saute)**
 
 ---
